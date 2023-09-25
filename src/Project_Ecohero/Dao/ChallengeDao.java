@@ -41,10 +41,21 @@ public class ChallengeDao {
         return list;
     }
 
-    // 챌린지 세부 내용 조회
+    // 챌린지 명을 입력 받아서 챌린지 세부 내용 조회
     // -> 하나하나의 챌린지 정보만을 조회하고 반환하므로 리스트로 작성하지 않음
-    public ChallengeVo challengeDetails(String chlName){
+    public ChallengeVo challengeDetails(List<ChallengeVo> chvl){
+
         ChallengeVo challenge = new ChallengeVo(); // 챌린지 정보 담을 객체 초기화
+        String chlName;
+        while(true) {
+            System.out.print("조회할 챌린지 이름을 입력하세요: ");
+            chlName = sc.next();
+            String check = chlName;
+            if(chvl.stream().filter(n -> check.equals(n.getChlName())).findAny().orElse(null) == null){
+                System.out.println("없는 챌린지명입니다.");
+            }else break;
+        }
+
         try{
             conn = Common.getConnection();
             String sql = "SELECT CHL_LEVEL , CHL_DESC, TO_CHAR(CHL_DATE, 'YYYY-MM-DD') AS CHL_DATE, L.POINT\n" +
@@ -127,4 +138,59 @@ public class ChallengeDao {
 
         }
     }
+    public void chlMenu(){
+        List<ChallengeVo> cni = challengeSelect(); // 리스트 불러오기
+        while(true) {
+            System.out.println("챌린지 목록");
+            for (ChallengeVo challenge : cni) { // 메뉴
+                System.out.println("이름: " + challenge.getChlName());
+                System.out.println("아이콘: " + challenge.getChlIcon());
+                System.out.println("난이도: " + challenge.getChlLevel());
+                System.out.println();
+            }
+            System.out.print("[1] 상세 설명 보기, [2] 내 챌린지 추가하기, [3] 메인메뉴로 돌아가기");
+            int sel = sc.nextInt();
+            switch(sel){
+                case 1: // 상세 설명 보기
+                    ChallengeVo challengeDetails = challengeDetails(cni); //challengeDetails 메소드를 받아서 출력해주려고
+                    if (challengeDetails != null) {
+                        System.out.println("챌린지 이름: " + challengeDetails.getChlName());
+                        System.out.println("난이도: " + challengeDetails.getChlLevel());
+                        System.out.println("설명: " + challengeDetails.getChlDesc());
+                        System.out.println("시작 날짜: " + challengeDetails.getDate());
+                        System.out.println("포인트: " + challengeDetails.getChlPoint());
+                    } else {
+                        System.out.println("챌린지를 찾을 수 없습니다.");
+                    }
+                    break;
+                case 2: // 내 챌린지 추가하기
+                    addChallenge(cni);
+                    System.out.println("챌린지가 추가되었습니다.");
+                    cni = challengeSelect();
+                    break;
+
+                case 3: // 메인메뉴로 돌아가기
+                    System.out.println("메인메뉴로 돌아갑니다.");
+                    return;
+                default:
+                    System.out.print("메뉴를 잘 못 선택하셨습니다.");
+            }
+
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
