@@ -82,6 +82,7 @@ public class FeedDao {
 
     // 피드를 하나씩 출력
     public void printFeed(FeedVo fv) {
+        System.out.println("=".repeat(20));
         System.out.println("닉네임 : " + fv.getUserAlias());
         System.out.println("이미지 : " + fv.getEcoImg());
         System.out.println("챌린지명 : " + fv.getChlName());

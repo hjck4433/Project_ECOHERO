@@ -265,9 +265,10 @@ public class MyPageDao {
     /////////////// 내 피드 수정하기 ///////////////////////////////////
     // 매개변수 : sql문의 WHERE 절에 활용하기 위한 feedNum
     public void updateMyFeed(int feedNum){
+        sc.nextLine();
         FeedVo myFv = selMyFeed(feedNum);
         System.out.print("수정할 사진을 입력하세요(기존사진 유지는 no 입력) : ");
-        String ecoImg = sc.next();
+        String ecoImg = sc.nextLine();
         if(ecoImg.equalsIgnoreCase("no")){
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
             // 기존 내용 유지
@@ -275,7 +276,7 @@ public class MyPageDao {
         }
 
         System.out.print("수정할 내용을 입력하세요(기존내용 유지는 no 입력) : ");
-        String ecoTxt = sc.next();
+        String ecoTxt = sc.nextLine();
         if(ecoTxt.equalsIgnoreCase("no")){
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
             // 기존 내용 유지
@@ -329,6 +330,7 @@ public class MyPageDao {
 
     /////// 내 정보 메뉴 //////////////////////////////////////////////////
     public void memberMenu(String userId){
+        Util ut = new Util(); // 고유번호값으로 정수가 입력되었는지 체크하는 메소드 호출을 위한 Util 객체 생성
         // 메인메뉴로 돌아가기 선택할 때까지 반복
         while(true) {
             // 내 정보 보기 진입 시 현재 로그인 중인 회원의 정보를 불러옴
@@ -369,17 +371,24 @@ public class MyPageDao {
                                 // 선택 고유번호의 피드 정보의 인덱스
                                 OptionalInt searchIdx;
                                 // 고유번호를 저장할 변수
-                                int feedNum;
+                                String feedNum; // 문자가 포함되서 들어오는 경우 바로 에러가 떠서 문자열로 우선 값을 받음
                                 while(true){ // 로그인한 회원이 작성한 고유번호를 입력 했을 때만 빠져나옴
-                                    System.out.print("수정할 피드의 고유번호 입력 : ");
-                                    feedNum = sc.nextInt();
+                                    while(true){
+                                        System.out.print("수정할 피드의 고유번호 입력 : ");
+                                        feedNum = sc.next();
+                                        if(feedNum.length() > 4){ // 길이가 4자리를 넘어가면
+                                            System.out.println("피드의 고유번호는 4자리 입니다.");
+                                        }if (!ut.isInteger(feedNum)){ // 문자가 포함 된 경우
+                                            System.out.println("피드의 고유번호는 숫자로만 이루어져 있습니다.");
+                                        }else break;
+                                    }
                                     // 람다식에서 고유번호를 지닌 리스트의 인덱스를 찾기 위해 사용하는 변수
-                                    int check = feedNum;
+                                    int check = Integer.parseInt(feedNum);
                                     // 입력한 고유번호에 해당하는 피드가 있는지
                                     searchIdx = IntStream.range(0, myFvl.size()) // 피드 길이만큼 반복해서
                                             .filter(i -> myFvl.get(i).getFeedNum()==check) // 확인
                                             .findFirst(); // 일치하는 내용의 첫번째 인덱스 반환
-                                    if(searchIdx.getAsInt() < 0){ //인덱스 시작이 0이므로 0보다 작은 값이 나오면 일치 항목 없음
+                                    if(searchIdx.isEmpty()){ // 값이 비어 있으면 없는 고유번호
                                         System.out.println("피드의 고유번호를 잘 못 선택하셨습니다.");
                                     }else break; // 피드에 해당 고유번호 존재 하면 빠져나옴
                                 }
@@ -388,22 +397,29 @@ public class MyPageDao {
                                 // myFvl.get(searchIdx.getAsInt())
                                 // 현재회원의 피드 리스트.get(고유번호가 포함된 피드의 인덱스(int형만 올 수 있음))
                                 // searchIdx는 Optionalidx 타입으로 int값으로 형변환을 해줘야 함
-                                updateMyFeed(feedNum);
+                                updateMyFeed(Integer.parseInt(feedNum));
                                 break;
                             case 2:
                                 while(true){ // 피드 존재 여부 확인은 수정과 동일
-                                    System.out.print("삭제할 피드의 고유번호 입력 : ");
-                                    feedNum = sc.nextInt();
-                                    int check = feedNum;
+                                    while(true){
+                                        System.out.print("삭제할 피드의 고유번호 입력 : ");
+                                        feedNum = sc.next();
+                                        if(feedNum.length() > 4){
+                                            System.out.println("피드의 고유번호는 4자리 입니다.");
+                                        }if (!ut.isInteger(feedNum)){
+                                            System.out.println("피드의 고유번호는 숫자로만 이루어져 있습니다.");
+                                        }else break;
+                                    }
+                                    int check = Integer.parseInt(feedNum);
                                     searchIdx = IntStream.range(0, myFvl.size())
                                             .filter(i -> myFvl.get(i).getFeedNum()==check)
                                             .findFirst();
-                                    if(searchIdx.getAsInt() < 0){
+                                    if(searchIdx.isEmpty()){
                                         System.out.println("피드의 고유번호를 잘 못 선택하셨습니다.");
                                     }else break;
                                 }
                                 // 선택한 피드를 delete / delete는 고유번호만 있어도 가능
-                                deleteMyFeed(feedNum);
+                                deleteMyFeed(Integer.parseInt(feedNum));
                                 break;
                             case 3 : // 내정보로 돌아감
                                 System.out.println("내 정보로 돌아갑니다.");

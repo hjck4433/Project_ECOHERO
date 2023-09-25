@@ -26,4 +26,13 @@ public class Util {
         }
         return true;
     }
+    // 입력된 값이 정수로만 이루어져 있는지 확인하는 메소드
+    public boolean isInteger(String strValue) {
+        try {
+            Integer.parseInt(strValue);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
 }
