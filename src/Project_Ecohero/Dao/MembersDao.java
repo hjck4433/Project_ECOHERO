@@ -92,8 +92,8 @@ public class MembersDao {
             if(mvl.stream().filter(n -> check.equals(n.getUserId())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 아이디 입니다.");
             }else if (!ut.checkInputOnlyNumberAndAlphabet(userId)) System.out.println("영문과 숫자 조합만 사용해주세요.");
-            else if (userId.length() < 5) System.out.println("ID는 5자 이상 입력해주세요");
-            else if (userId.length() > 20) System.out.println("ID는 20자 이하로 입력해주세요");
+            else if (userId.length() <= 5) System.out.println("ID는 5자 이상 입력해주세요");
+            else if (userId.length() >= 20) System.out.println("ID는 20자 이하로 입력해주세요");
             else break;
         }
 
@@ -102,8 +102,8 @@ public class MembersDao {
         while(true) {
             System.out.print("비밀번호(8자 이상 20자 이하) : ");
             userPw = sc.next();
-            if(userPw.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
-            else if (userPw.length() > 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
+            if(userPw.length() <= 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
+            else if (userPw.length() >= 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
             else if (userPw.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할수 없습니다.");
             else break;
         }
@@ -122,8 +122,8 @@ public class MembersDao {
             if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 닉네임 입니다.");
             }
-            else if (intA < 2) System.out.print("닉네임은 2자 이상 입력해주세요");
-            else if (intA > 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
+            else if (intA <= 2) System.out.print("닉네임은 2자 이상 입력해주세요");
+            else if (intA >= 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
             else break;
         }
 
