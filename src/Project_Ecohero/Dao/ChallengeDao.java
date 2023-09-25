@@ -84,6 +84,7 @@ public class ChallengeDao {
 
     // 내 챌린지 추가 기능
     public void addChallenge(List<ChallengeVo> challengeSelect) {
+        sc.nextLine();
         String chlName;
         while(true) {
             System.out.print("등록하고 싶은 챌린지명을 입력해주세요 : ");
@@ -148,7 +149,7 @@ public class ChallengeDao {
                 System.out.println("난이도: " + challenge.getChlLevel());
                 System.out.println();
             }
-            System.out.print("[1] 상세 설명 보기, [2] 내 챌린지 추가하기, [3] 메인메뉴로 돌아가기");
+            System.out.print("[1] 상세 설명 보기, [2] 내 챌린지 추가하기, [3] 메인 메뉴로 돌아가기 : ");
             int sel = sc.nextInt();
             switch(sel){
                 case 1: // 상세 설명 보기
@@ -159,10 +160,16 @@ public class ChallengeDao {
                         System.out.println("설명: " + challengeDetails.getChlDesc());
                         System.out.println("시작 날짜: " + challengeDetails.getDate());
                         System.out.println("포인트: " + challengeDetails.getChlPoint());
-                    } else {
-                        System.out.println("챌린지를 찾을 수 없습니다.");
                     }
-                    break;
+                    int selBack = 0;
+                    while(true){
+                        System.out.print("[1] 피드메뉴로 돌아가기");
+                        selBack = sc.nextInt();
+                        if(selBack == 1) break;
+                        else System.out.println("메뉴를 잘 못 선택하셨습니다.");
+                    }
+                    if(selBack == 1) break;
+
                 case 2: // 내 챌린지 추가하기
                     addChallenge(cni);
                     System.out.println("챌린지가 추가되었습니다.");

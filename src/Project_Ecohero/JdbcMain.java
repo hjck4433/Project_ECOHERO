@@ -1,5 +1,6 @@
 package Project_Ecohero;
 
+import Project_Ecohero.Dao.ChallengeDao;
 import Project_Ecohero.Dao.FeedDao;
 import Project_Ecohero.Dao.MembersDao;
 import Project_Ecohero.Dao.MyPageDao;
@@ -52,11 +53,12 @@ public class JdbcMain {
             MyPageDao myPageDao = new MyPageDao();
             MembersVo currMv = myPageDao.currMemberInfo(userId);
             System.out.println("Welcome to ECOHERO!!!");
-            System.out.print("[1]챌린지 보기 [2] 피드 보기 [3] 내 정보 보기 [4] 종료하기 : ");
+            System.out.print("[1] 챌린지 보기 [2] 피드 보기 [3] 내 정보 보기 [4] 종료하기 : ");
             int selMain = sc.nextInt();
             switch(selMain) {
                 case 1 :
-                    System.out.println("챌린지 메인 자리입니다!");
+                    ChallengeDao chlDao = new ChallengeDao();
+                    chlDao.chlMenu();
                     break;
                 case 2 :
                     FeedDao feedDao = new FeedDao();
