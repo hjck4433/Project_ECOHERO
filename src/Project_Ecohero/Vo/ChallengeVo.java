@@ -36,6 +36,7 @@ public class ChallengeVo {
     }
 
 
+
     public String getChlName() {
         return chlName;
     }

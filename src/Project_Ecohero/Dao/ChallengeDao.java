@@ -7,20 +7,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class ChallengeDao {
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
-
+    Scanner sc = new Scanner(System.in);
 
     // 챌린지 리스트 선택 -> 모든 챌린지의 목록 생성(리스트)
     public List<ChallengeVo> challengeSelect() {
         List<ChallengeVo> list = new ArrayList<>();
         try {
             conn = Common.getConnection();
-            String sql = "SELECT CHL_NAME, CHL_ICON, CHL_LEVEL FROM CHALLENGE ORDER BY CHL_LEVEL"; ///
+            String sql = "SELECT CHL_NAME, CHL_ICON, CHL_LEVEL FROM CHALLENGE ORDER BY CHL_LEVEL"; //
             pstmt = conn.prepareStatement(sql); // 보낼 쿼리문을 준비하고 있다
             rs = pstmt.executeQuery();//반환을 위한 것. set 형식으로 리스트 받겠다.
 
@@ -41,9 +42,9 @@ public class ChallengeDao {
     }
 
     // 챌린지 세부 내용 조회
-    // -> 하나하나의 챌린지 정보만을 조회하고 반횐하므로 리스트로 작성하지 않음
+    // -> 하나하나의 챌린지 정보만을 조회하고 반환하므로 리스트로 작성하지 않음
     public ChallengeVo challengeDetails(String chlName){
-    ChallengeVo challenge = new ChallengeVo(); // 챌린지 정보 담을 객체 초기화
+        ChallengeVo challenge = new ChallengeVo(); // 챌린지 정보 담을 객체 초기화
         try{
             conn = Common.getConnection();
             String sql = "SELECT CHL_LEVEL , CHL_DESC, TO_CHAR(CHL_DATE, 'YYYY-MM-DD') AS CHL_DATE, L.POINT\n" +
@@ -68,26 +69,62 @@ public class ChallengeDao {
                 e.printStackTrace();
             }
             return challenge;
-        }
+    }
 
-        // 내 챌린지 추가 기능
-        public void addChallenge(ChallengeVo challenge) {
-            try {
-                conn = Common.getConnection();
-                String sql = "INSERT INTO CHALLENGE(CHL_NAME, CHL_ICON, CHL_DESC, CHL_LEVEL) VALUES(?, ?, ?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, challenge.getChlName());
-                pstmt.setString(2, challenge.getChlIcon());
-                pstmt.setString(3, challenge.getChlDesc());
-                pstmt.setString(4, challenge.getChlLevel());
-                pstmt.executeUpdate();
-
-                Common.close(pstmt);
-                Common.close(conn);
-            } catch (Exception e) {
-                e.printStackTrace();
-
+    // 내 챌린지 추가 기능
+    public void addChallenge(List<ChallengeVo> challengeSelect) {
+        String chlName;
+        while(true) {
+            System.out.print("등록하고 싶은 챌린지명을 입력해주세요 : ");
+            chlName = sc.nextLine();
+            String check = chlName;
+            if(challengeSelect.stream().filter(n -> check.equals(n.getChlName())).findAny().orElse(null) != null){
+                System.out.println("이미 사용 중인 챌린지명입니다.");
             }
+            else if(chlName.length() > 40) System.out.println("챌린지명은 영문 40자, 한글 13자 이하로 입력해주세요.");
+            else break;
+        }
+        String chlIcon;
+        while(true){
+            System.out.print("등록하고 싶은 챌린지 아이콘을 입력해주세요. : ");
+            chlIcon = sc.next() ;
+            String check = chlIcon;
+            if(challengeSelect.stream().filter(n -> check.equals(n.getChlIcon())).findAny().orElse(null) != null) {
+                System.out.println("이미 사용 중인 이미지 입니다.");
+            }
+            else break;
+        }
+        String chlDesc;
+        while(true){
+            System.out.print("챌린지 설명을 입력해주세요. : ");
+            chlDesc = sc.next();
+            if(chlDesc.length() > 300) System.out.println("챌린지 설명은 최대 300바이트 이내로 입력해주세요.");
+            else break;
+        }
+        String chlLevel;
+        while(true) {
+            System.out.print("챌린지 난이도를 입력해주세요(*/**/***) : ");
+            chlLevel = sc.next();
+            String check = chlLevel;
+            if (challengeSelect.stream().filter(n -> check.equals(n.getChlLevel())).findAny().orElse(null) == null) {
+                System.out.println("챌린지 난이도는 (*/**/***) 중의 하나로 입력해주세요.");
+            } else break;
+        }
+        try {
+            conn = Common.getConnection();
+            String sql = "INSERT INTO CHALLENGE(CHL_NAME, CHL_ICON, CHL_DESC, CHL_DATE, CHL_LEVEL) VALUES(?, ?, ?, sysdate, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, chlName);
+            pstmt.setString(2, chlIcon);
+            pstmt.setString(3, chlDesc);
+            pstmt.setString(4, chlLevel);
+            pstmt.executeUpdate();
 
+            Common.close(pstmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 }
