@@ -22,7 +22,7 @@ CREATE TABLE MEMBERS(
     -- MEMBERS DATA 입력
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('sophialee328', 'P@ssw0rd123!','마르코', '허윤진', 'example1@gmail.com', '010-4567-8584','16-APR-2023',15500);
-INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT) -- 문제발생
+INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT) 
         VALUES('eunbyulwang1','Secur1ty!S','에이스','사쿠라','testemail2@yahoo.com','010-4567-8585','17.Apr.23',250);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('dhkimm1021', 'MyP@ssw0d20', '흰수염', '김채원', 'sample3@hotmail.com', '010-4567-8586', '18.Apr.23', 3650);
@@ -31,31 +31,31 @@ INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,J
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('peaceeeh12', 'Pr1v@te#Data', '와포르', '홍은채', 'myemail5@aol.com', '010-4567-8588', '20.Apr.23', 700);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('eyung1205',	'Pa$$w0rd!P',	'로우',	'오해원', 'email6@protonmail.com', '010-4567-8589',	'21.Apr.23', 8500);
+        VALUES('eyung1205', 'Pa$$w0rd!P', '로우', '오해원', 'email6@protonmail.com', '010-4567-8589', '21.Apr.23', 8500);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('jessi29', 'C3@CoLLnf', '히루루크', '박진', 'random7@mail.com', '010-4567-8590', '22.Apr.23', 6150);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('danbi0122',	'Str0ng#P@ss', '나미', '설윤아', 'email8@icloud.com', '010-4567-8591', '23.Apr.23', 450);
+        VALUES('danbi0122', 'Str0ng#P@ss', '나미', '설윤아', 'email8@icloud.com', '010-4567-8591', '23.Apr.23', 450);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('dblee0122', 'S3cur3#Acc', '조로', '배진솔', 'newuser9@zoho.com', '010-4567-8592', '24.Apr.23', 2000);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('hey87830', '2F@ctor#Auth',	'로빈',	'김지우', 'email10@inbox.com', '010-4567-8593', '25.Apr.23', 1050);
+        VALUES('hey87830', '2F@ctor#Auth', '로빈', '김지우', 'email10@inbox.com', '010-4567-8593', '25.Apr.23', 1050);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('sung3062', 'Pr0t3ctM3', '상디', '장규진', 'demo1@fastmail.com', '010-4567-8594', '26.Apr.23',	1300);
+        VALUES('sung3062', 'Pr0t3ctM3', '상디', '장규진', 'demo1@fastmail.com', '010-4567-8594', '26.Apr.23', 1300);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('ekthal1022', '@cc3ssC0d3!', '우솝', '방찬', 'email12@yandex.com', '010-4567-8595', '27.Apr.23', 2550);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('aileen960116', 'P@ssPhr@2023', '브룩', '이민호',	'user13@mailinator.com', '010-4567-8596', '28.Apr.23', 3100);
+        VALUES('aileen960116', 'P@ssPhr@2023', '브룩', '이민호', 'user13@mailinator.com', '010-4567-8596', '28.Apr.23', 3100);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('awaken16', 'Saf3@ua12', '징베',	'서청빈', 'tempry14@tempmail.net', '010-4567-8597', '29.Apr.23',	3850);
+        VALUES('awaken16', 'Saf3@ua12', '징베',	'서청빈', 'tempry14@tempmail.net', '010-4567-8597', '29.Apr.23', 3850);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('pronoia91',	'F0rt1f13d#', '쵸파', '김승민',	'mail15@guerrillamail.com',	'010-4567-8598', '30.Apr.23', 2650);
+        VALUES('pronoia91', 'F0rt1f13d#', '쵸파', '김승민', 'mail15@guerrillamail.com',	'010-4567-8598', '30.Apr.23', 2650);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('jinkei904',  '7h1s1$Str', '프랑키', '황현진', 'inbox16@cock.li', '010-4567-8599', '1.May.23', 1950);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('woowu6310',	'P@ssw0rd!', '빅맘',	'이용복', 'example17@tutanota.com', '010-4567-8600', '2.May.23', 1500);
+        VALUES('woowu6310', 'P@ssw0rd!', '빅맘', '이용복', 'example17@tutanota.com', '010-4567-8600', '2.May.23', 1500);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
-        VALUES('superb1818', '3ncrypt#M', '버기', '한지성',	'testemail18@hushmail.com',	'010-4567-8601', '3.May.23', 2400);
+        VALUES('superb1818', '3ncrypt#M', '버기', '한지성', 'testemail18@hushmail.com',	'010-4567-8601', '3.May.23', 2400);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
         VALUES('hjuiop0', 'Gu@rdY0ur', '크로커다일', '양정인', 'user19@dispostable.com', '010-4567-8602', '4.May.23', 4950);
 INSERT INTO MEMBERS(USER_ID,USER_PW,USER_ALIAS,USER_NAME,USER_EMAIL,USER_PHONE,JOIN_DATE,USER_POINT)
@@ -136,23 +136,23 @@ CACHE 2;
 -- FEED TABLE 생성
 CREATE TABLE FEED (
     FEED_NUM    NUMBER(4) PRIMARY KEY,
-    USER_ALIAS  VARCHAR2(30) REFERENCES MEMBERS(USER_ALIAS),
+    USER_ID     VARCHAR2(20) REFERENCES MEMBERS(USER_ID), -- 닉네임 → ID로 변경. 
     ECO_IMG     VARCHAR2(300) NOT NULL,
     CHL_NAME    VARCHAR2(40) REFERENCES CHALLENGE(CHL_NAME),
     ECO_TXT     VARCHAR2(300)
 );
 
 -- FEED DATA 입력
-INSERT INTO FEED(FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT)
-        VALUES(FEED_NUM_SEQ.NEXTVAL, '마르코', '텀블러.png', '텀블러사용', '스벅에서 텀블러 사용하고 300원 할인 받았어요 ㅎㅎ' );
-INSERT INTO FEED(FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT)
-        VALUES(FEED_NUM_SEQ.NEXTVAL, '에이스', '계단.png', '계단이용하기', '17층에 살지만 하루 한번은 계단 이용하는 중:)' );
-INSERT INTO FEED(FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT)
-        VALUES(FEED_NUM_SEQ.NEXTVAL, '흰수염', '버스.png', '대중교통이용하기', '매일 지각해서 택시를 자주 이용했는데, 이제는 환경 보호를 위해 일찍 일어나서 대중교통 타기 실천중이에요~' );
-INSERT INTO FEED(FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT)
-        VALUES(FEED_NUM_SEQ.NEXTVAL, '아론', '걷기.png', '만보걷기', '만보 걷기로 건강도 지키고 환경도 지켰다!' );
-INSERT INTO FEED(FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT)
-        VALUES(FEED_NUM_SEQ.NEXTVAL, '와포르', '분리수거통.png', '분리수거', '소비를 줄일 수 없다면 분리수거 라도...' );
+INSERT INTO FEED(FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT)
+        VALUES(FEED_NUM_SEQ.NEXTVAL, 'sophialee328', '텀블러.png', '텀블러사용', '스벅에서 텀블러 사용하고 300원 할인 받았어요 ㅎㅎ' );
+INSERT INTO FEED(FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT)
+        VALUES(FEED_NUM_SEQ.NEXTVAL, 'eunbyulwang1', '계단.png', '계단이용하기', '17층에 살지만 하루 한번은 계단 이용하는 중:)' );
+INSERT INTO FEED(FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT)
+        VALUES(FEED_NUM_SEQ.NEXTVAL, 'dhkimm1021', '버스.png', '대중교통이용하기', '매일 지각해서 택시를 자주 이용했는데, 이제는 환경 보호를 위해 일찍 일어나서 대중교통 타기 실천중이에요~' );
+INSERT INTO FEED(FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT)
+        VALUES(FEED_NUM_SEQ.NEXTVAL, 'chickeng2', '걷기.png', '만보걷기', '만보 걷기로 건강도 지키고 환경도 지켰다!' );
+INSERT INTO FEED(FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT)
+        VALUES(FEED_NUM_SEQ.NEXTVAL, 'peaceeeh12', '분리수거통.png', '분리수거', '소비를 줄일 수 없다면 분리수거 라도...' );
 
 SELECT * FROM FEED;
 
