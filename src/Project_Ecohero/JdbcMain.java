@@ -2,6 +2,7 @@ package Project_Ecohero;
 
 import Project_Ecohero.Dao.FeedDao;
 import Project_Ecohero.Dao.MembersDao;
+import Project_Ecohero.Dao.MyPageDao;
 import Project_Ecohero.Vo.MembersVo;
 
 import java.util.Scanner;
@@ -48,7 +49,8 @@ public class JdbcMain {
             if (isLogin) break;
         }
         while (isLogin) {
-            MembersVo currMv = mDao.currMemberInfo(userId);
+            MyPageDao myPageDao = new MyPageDao();
+            MembersVo currMv = myPageDao.currMemberInfo(userId);
             System.out.println("Welcome to ECOHERO!!!");
             System.out.print("[1]챌린지 보기 [2] 피드 보기 [3] 내 정보 보기 [4] 종료하기 : ");
             int selMain = sc.nextInt();
@@ -61,7 +63,7 @@ public class JdbcMain {
                     feedDao.feedMenu(currMv.getUserId(), currMv.getUserAlias());
                     break;
                 case 3 :
-                    mDao.memberMenu(userId);
+                    myPageDao.memberMenu(userId);
                     break;
                 case 4 :
                     System.out.println("ECOHERO를 종료합니다");

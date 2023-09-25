@@ -15,6 +15,11 @@ public class MembersVo {
 
     public MembersVo(){};
 
+    public MembersVo(String userId, String userAlias){
+        this.userId = userId;
+        this.userAlias = userAlias;
+    };
+
     public MembersVo(String userId, String userName, String userAlias, String heroGrade, int userPoint, String userEmail, String userPhone, String joinDate, int days) {
         this.userId = userId;
         this.userName = userName;
