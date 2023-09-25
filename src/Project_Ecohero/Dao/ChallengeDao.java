@@ -43,20 +43,21 @@ public class ChallengeDao {
     // 챌린지 세부 내용 조회
     // -> 하나하나의 챌린지 정보만을 조회하고 반횐하므로 리스트로 작성하지 않음
     public ChallengeVo challengeDetails(String chlName){
-    ChallengeVo challenge = null; // 챌린지 정보 담을 객체 초기화
+    ChallengeVo challenge = new ChallengeVo(); // 챌린지 정보 담을 객체 초기화
         try{
             conn = Common.getConnection();
-            String sql = "SELECT CHL_NAME, CHL_LEVEL, CHL_DESC, TO_CHAR(CHL_DATE, 'YVYY-MM-DD') AS CHL_DATE, CHL_POINT FROM CHALLENGE WHERE CHL_NAME = ?";
+            String sql = "SELECT CHL_LEVEL , CHL_DESC, TO_CHAR(CHL_DATE, 'YYYY-MM-DD') AS CHL_DATE, L.POINT\n" +
+                    "FROM CHALLENGE C JOIN ECO_LV L ON C.CHL_LEVEL = L.LEVELS\n" + // JOIN 해서 레벨을 기준으로 포인트 값을 반환
+                    "WHERE CHL_NAME = ?";
             pstmt = conn.prepareStatement(sql); // 보낼 쿼리문을 준비하고 있다
             pstmt.setString(1, chlName);        // ?에 챌린지 명으로 검색하기 위해서
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                chlName = rs.getString("CHL_NAME");   // 챌린지 이름
                 String chlLevel = rs.getString("CHL_LEVEL"); // 챌린지 난이도
                 String chlDesc = rs.getString("CHL_DESC");   // 챌린지 설명
                 String chlDate = rs.getString("CHL_DATE");            // 챌린지 시작 날짜
-                int chlPoint = rs.getInt("Chl_POINT");              // 획득 가능 포인트
+                int chlPoint = rs.getInt("POINT");              // 획득 가능 포인트
                 challenge = new ChallengeVo(chlName, chlLevel, chlDesc, chlDate, chlPoint); // 챌린지 정보
         }
             Common.close(rs);

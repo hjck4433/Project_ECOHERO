@@ -7,7 +7,7 @@ public class ChallengeVo {
     private String chlName;
     private String chlIcon;
     private String chlDesc;
-    private Date date;
+    private String date;
     private String chlLevel;
     private int chlPoint; // 챌린지 포인트 추가
 
@@ -20,7 +20,7 @@ public class ChallengeVo {
         this.chlLevel = chlLevel;
     }
     // challengeDetails를 위한 생성자
-    public ChallengeVo(String chlName, String chlLevel, String chlDesc, Date date, int chlPoint) {
+    public ChallengeVo(String chlName, String chlLevel, String chlDesc, String date, int chlPoint) {
         this.chlName = chlName;
         this.chlLevel = chlLevel;
         this.chlDesc = chlDesc;
@@ -35,8 +35,6 @@ public class ChallengeVo {
         this.chlLevel = chlLevel;
     }
 
-    public ChallengeVo(String chlName, String chlLevel, String chlDesc, String chlDate, int chlPoint) {
-    }
 
     public String getChlName() {
         return chlName;
@@ -62,11 +60,11 @@ public class ChallengeVo {
         this.chlDesc = chlDesc;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
