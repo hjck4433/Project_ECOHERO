@@ -8,19 +8,31 @@ public class MembersVo {
     private String userName;
     private String userEmail;
     private String userPhone;
-    private Date joinDate;
+    private String joinDate;
+    private String heroGrade;
     private int userPoint;
+    private int days;
 
-    MembersVo(){};
+    public MembersVo(){};
 
-    public MembersVo(String userId, String userAlias, String userName, String userEmail, String userPhone, Date joinDate, int userPoint) {
+    public MembersVo(String userId, String userName, String userAlias, String heroGrade, int userPoint, String userEmail, String userPhone, String joinDate, int days) {
         this.userId = userId;
-        this.userAlias = userAlias;
         this.userName = userName;
+        this.userAlias = userAlias;
+        this.heroGrade = heroGrade;
+        this.userPoint = userPoint;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
         this.joinDate = joinDate;
-        this.userPoint = userPoint;
+        this.days = days;
+    }
+
+    // 회원가입 시 중복 확인을 위해 불러오는 회원정보를 리스트로 담기 위한 생성자
+    public MembersVo(String userId, String userAlias, String userEmail, String userPhone) {
+        this.userId = userId;
+        this.userAlias = userAlias;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
     }
 
     public String getUserId() {
@@ -38,6 +50,7 @@ public class MembersVo {
     public void setUserAlias(String userAlias) {
         this.userAlias = userAlias;
     }
+
 
     public String getUserName() {
         return userName;
@@ -63,12 +76,20 @@ public class MembersVo {
         this.userPhone = userPhone;
     }
 
-    public Date getJoinDate() {
+    public String getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
+    }
+
+    public String getHeroGrade() {
+        return heroGrade;
+    }
+
+    public void setHeroGrade(String heroGrade) {
+        this.heroGrade = heroGrade;
     }
 
     public int getUserPoint() {
@@ -77,5 +98,13 @@ public class MembersVo {
 
     public void setUserPoint(int userPoint) {
         this.userPoint = userPoint;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
     }
 }
