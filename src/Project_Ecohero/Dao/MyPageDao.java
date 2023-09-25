@@ -209,6 +209,29 @@ public class MyPageDao {
         return myFvl;
     }
 
+    //// 특정 피드 정보 가져오기
+    public FeedVo selMyFeed(int feedNum){
+        FeedVo myfv = new FeedVo();
+        try{
+            conn = Common.getConnection();
+            String sql = "SELECT ECO_IMG, ECO_TXT FROM FEED WHERE FEED_NUM = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,feedNum);
+            rs = pstmt.executeQuery();
+            if(rs.next()) {
+                String ecoImg = rs.getString("ECO_IMG");
+                String ecoTxt = rs.getString("ECO_TXT");
+                myfv = new FeedVo(ecoImg, ecoTxt);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(pstmt);
+        Common.close(conn);
+        return myfv;
+    }
+
     /// 피드 순서대로 출력
     public void printMyFeed(List<FeedVo> myFvl){
         for(FeedVo fv : myFvl) {
@@ -222,8 +245,8 @@ public class MyPageDao {
 
     /////////////// 내 피드 수정하기 ///////////////////////////////////
     // 매개변수 : 수정할 피드를 담은 FeedVo 객체, sql문의 WHERE 절에 활용하기 위한 feedNum
-    public void updateMyFeed(FeedVo myFv, int feedNum){
-
+    public void updateMyFeed(int feedNum){
+        FeedVo myFv = selMyFeed(feedNum);
         System.out.print("수정할 사진을 입력하세요 : ");
         String ecoImg = sc.next();
         if(ecoImg.equalsIgnoreCase("no")){
@@ -346,7 +369,7 @@ public class MyPageDao {
                                 // myFvl.get(searchIdx.getAsInt())
                                 // 현재회원의 피드 리스트.get(고유번호가 포함된 피드의 인덱스(int형만 올 수 있음))
                                 // searchIdx는 Optionalidx 타입으로 int값으로 형변환을 해줘야 함
-                                updateMyFeed(myFvl.get(searchIdx.getAsInt()),feedNum);
+                                updateMyFeed(feedNum);
                                 break;
                             case 2:
                                 while(true){ // 피드 존재 여부 확인은 수정과 동일

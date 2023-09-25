@@ -24,12 +24,18 @@ public class FeedVo {
         this.ecoTxt = ecoTxt;
         this.goodNum = goodNum;
     }
-
+    // 내 정보에서 내 피드 정보만 담을 생성자
     public FeedVo(int feedNum, String chlName, String ecoTxt, int goodNum) {
         this.feedNum = feedNum;
         this.chlName = chlName;
         this.ecoTxt = ecoTxt;
         this.goodNum = goodNum;
+    }
+
+    // 피드의 이미지와 내용만 담는 생성자
+    public FeedVo(String ecoImg, String ecoTxt) {
+        this.ecoImg = ecoImg;
+        this.ecoTxt = ecoTxt;
     }
 
     public int getFeedNum() {
