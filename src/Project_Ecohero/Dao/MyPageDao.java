@@ -88,8 +88,8 @@ public class MyPageDao {
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
             // 기존 내용 유지
             if(userPw.equalsIgnoreCase("no")) break;
-            else if(userPw.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
-            else if (userPw.length() > 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
+            else if(userPw.length() <= 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
+            else if (userPw.length() >= 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
             else if (userPw.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할수 없습니다.");
             else break;
         }
@@ -101,13 +101,19 @@ public class MyPageDao {
             System.out.print("변경할 닉네임을 입력하세요 : ");
             userAlias = sc.next();
             String check = userAlias;
+
+            int intA = userAlias.getBytes().length;
+
             // 중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 닉네임 입니다.");
             }else if (userAlias.equalsIgnoreCase("no")){ // 아무것도 입력안하면 기존 값 유지
                 userAlias = cml.getUserAlias();
                 break;
-            }else break;
+            }
+            else if (intA <= 2) System.out.print("닉네임은 2자 이상 입력해주세요");
+            else if (intA >= 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
+            else break;
         }
 
         // 수정할 이메일 입력
@@ -149,7 +155,9 @@ public class MyPageDao {
                 // 기존 내용 유지
                 userPhone = cml.getUserPhone();
                 break;
-            }else break;
+            }
+            else if (userPhone.length() != 13) System.out.print("전화번호는 (-)포함 13글자로 작성하세요.");
+            else break;
         }
 
 

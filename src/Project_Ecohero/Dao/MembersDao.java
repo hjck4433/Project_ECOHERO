@@ -109,7 +109,6 @@ public class MembersDao {
         }
 
         // 닉네임 입력 - byte → int 변환해서 글자길이 x, 인트나 바이트 길이로 기준.
-        // int it = b_data & 0xff;
         String userAlias;
         while(true) {
             System.out.print("닉네임 : ");
@@ -168,7 +167,7 @@ public class MembersDao {
         try{
             conn = Common.getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,userId);
+            pstmt.setString(1, userId);
             pstmt.setString(2, userPw);
             pstmt.setString(3, userAlias);
             pstmt.setString(4, userName);
