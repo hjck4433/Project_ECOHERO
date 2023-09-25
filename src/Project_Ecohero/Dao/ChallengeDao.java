@@ -163,7 +163,7 @@ public class ChallengeDao {
                     }
                     int selBack = 0;
                     while(true){
-                        System.out.print("[1] 피드메뉴로 돌아가기");
+                        System.out.print("[1] 피드메뉴로 돌아가기 : ");
                         selBack = sc.nextInt();
                         if(selBack == 1) break;
                         else System.out.println("메뉴를 잘 못 선택하셨습니다.");

@@ -62,7 +62,7 @@ public class JdbcMain {
                     break;
                 case 2 :
                     FeedDao feedDao = new FeedDao();
-                    feedDao.feedMenu(currMv.getUserId(), currMv.getUserAlias());
+                    feedDao.feedMenu(currMv.getUserId());
                     break;
                 case 3 :
                     myPageDao.memberMenu(userId);

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -83,17 +84,18 @@ public class MembersDao {
         // 아이디 입력
         String userId;
         while(true) {
+            Util ut = new Util();
+
             System.out.print("아이디 : ");
             userId = sc.next();
             String check = userId;
 
-            Util ut = new Util();
             // 중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserId())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 아이디 입니다.");
             }else if (!ut.checkInputOnlyNumberAndAlphabet(userId)) System.out.println("영문과 숫자 조합만 사용해주세요.");
-            else if (userId.length() <= 5) System.out.println("ID는 5자 이상 입력해주세요");
-            else if (userId.length() >= 20) System.out.println("ID는 20자 이하로 입력해주세요");
+            else if (userId.length() < 5) System.out.println("ID는 5자 이상 입력해주세요");
+            else if (userId.length() > 20) System.out.println("ID는 20자 이하로 입력해주세요");
             else break;
         }
 
@@ -102,8 +104,13 @@ public class MembersDao {
         while(true) {
             System.out.print("비밀번호(8자 이상 20자 이하) : ");
             userPw = sc.next();
-            if(userPw.length() <= 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
-            else if (userPw.length() >= 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
+
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+            Matcher passMatcher1 = passPattern1.matcher(userPw);
+
+            if(userPw.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
+            else if (userPw.getBytes().length > 20) System.out.println("비밀번호는 20자 이하 영문자와 &제외 특수문자로 입력해주세요");
+            else if (!passMatcher1.find()) System.out.println("비밀번호는 영문자, 숫자, 특수기호만 사용 할 수 있습니다.");
             else if (userPw.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할수 없습니다.");
             else break;
         }
@@ -121,8 +128,8 @@ public class MembersDao {
             if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 닉네임 입니다.");
             }
-            else if (intA <= 2) System.out.print("닉네임은 2자 이상 입력해주세요");
-            else if (intA >= 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
+            else if (intA < 2) System.out.print("닉네임은 2자 이상 입력해주세요");
+            else if (intA > 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
             else break;
         }
 
@@ -181,33 +188,6 @@ public class MembersDao {
         Common.close(pstmt);
         Common.close(conn);
         System.out.println("회원가입이 완료되었습니다. 메인메뉴로 이동합니다.");
-    }
-
-    /// 회원가입 또는 로그인 성공 시 아이디 닉네임이 저장된 MembersVo 객체 반환
-    public MembersVo idSet(String userId) {
-        MembersVo membersVo = new MembersVo();
-        try{
-            conn = Common.getConnection();
-            String sql = "SELECT MEMBERS USER_ALIAS \n" +
-                    "FROM MEMBERS\n" +
-                    "WHERE USER_ID = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, userId);
-            rs = pstmt.executeQuery();
-
-            if(rs.next()) { // 결과가 나오면.
-                String userAlias = rs.getString("USER_ALIAS");
-                membersVo = new MembersVo(userId, userAlias);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Common.close(rs);
-        Common.close(pstmt);
-        Common.close(conn);
-
-        return membersVo;
     }
 
 }

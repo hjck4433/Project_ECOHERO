@@ -1,6 +1,7 @@
 package Project_Ecohero.Dao;
 
 import Project_Ecohero.Common.Common;
+import Project_Ecohero.Common.Util;
 import Project_Ecohero.Vo.FeedVo;
 import Project_Ecohero.Vo.MembersVo;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
@@ -83,13 +85,17 @@ public class MyPageDao {
         // 수정할 비밀번호 입력
         String userPw="";
         while(true) {
-            System.out.print("변경할 비밀번호(8자 이상 20자 이하) : ");
+            System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPw = sc.next();
+
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+            Matcher passMatcher1 = passPattern1.matcher(userPw);
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
             // 기존 내용 유지
             if(userPw.equalsIgnoreCase("no")) break;
-            else if(userPw.length() <= 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
-            else if (userPw.length() >= 20) System.out.println("비밀번호는 20자 이하로 입력해주세요");
+            else if(userPw.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요");
+            else if (userPw.getBytes().length > 20) System.out.println("비밀번호는 20자 이하 영문자와 &제외 특수문자로 입력해주세요");
+            else if (!passMatcher1.find()) System.out.println("비밀번호는 영문자, 숫자, 특수기호만 사용 할 수 있습니다.");
             else if (userPw.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할수 없습니다.");
             else break;
         }
@@ -98,7 +104,7 @@ public class MyPageDao {
         // 수정할 닉네임 입력
         String userAlias;
         while(true) {
-            System.out.print("변경할 닉네임을 입력하세요 : ");
+            System.out.print("변경할 닉네임을 입력하세요 (기존 닉네임 유지는 no 입력) : ");
             userAlias = sc.next();
             String check = userAlias;
 
@@ -111,15 +117,15 @@ public class MyPageDao {
                 userAlias = cml.getUserAlias();
                 break;
             }
-            else if (intA <= 2) System.out.print("닉네임은 2자 이상 입력해주세요");
-            else if (intA >= 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
+            else if (intA < 2) System.out.print("닉네임은 2자 이상 입력해주세요");
+            else if (intA > 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
             else break;
         }
 
         // 수정할 이메일 입력
         String userEmail="";
         while(true) {
-            System.out.print("변경할 이메일을 입력하세요: ");
+            System.out.print("변경할 이메일을 입력하세요 (기존 이메일 유지는 no 입력) : ");
             userEmail = sc.next();
             String check = userEmail;
             String pattern2 = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
@@ -142,7 +148,7 @@ public class MyPageDao {
         // 수정할 핸드폰 번호 입력
         String userPhone ="";
         while(true) {
-            System.out.print("변경할 핸드폰 번호를 입력하세요 : ");
+            System.out.print("변경할 핸드폰 번호를 입력하세요 (기존 번호 유지는 no 입력) : ");
             userPhone = sc.next();
             String check = userPhone;
             //중복 체크
@@ -222,7 +228,7 @@ public class MyPageDao {
         return myFvl;
     }
 
-    //// 특정 피드 정보 가져오기
+    //// 고유번호를 매개변수로 피드 정보 가져오기 - 수정을 원하지 않는 경우 기존 피드 내용 가져오기 위한 메소드
     public FeedVo selMyFeed(int feedNum){
         FeedVo myfv = new FeedVo();
         try{
@@ -257,10 +263,10 @@ public class MyPageDao {
     }
 
     /////////////// 내 피드 수정하기 ///////////////////////////////////
-    // 매개변수 : 수정할 피드를 담은 FeedVo 객체, sql문의 WHERE 절에 활용하기 위한 feedNum
+    // 매개변수 : sql문의 WHERE 절에 활용하기 위한 feedNum
     public void updateMyFeed(int feedNum){
         FeedVo myFv = selMyFeed(feedNum);
-        System.out.print("수정할 사진을 입력하세요 : ");
+        System.out.print("수정할 사진을 입력하세요(기존사진 유지는 no 입력) : ");
         String ecoImg = sc.next();
         if(ecoImg.equalsIgnoreCase("no")){
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
@@ -268,7 +274,7 @@ public class MyPageDao {
             ecoImg = myFv.getEcoImg();
         }
 
-        System.out.print("수정할 내용을 입력하세요 : ");
+        System.out.print("수정할 내용을 입력하세요(기존내용 유지는 no 입력) : ");
         String ecoTxt = sc.next();
         if(ecoTxt.equalsIgnoreCase("no")){
             // 해당 부분 수정원치 않는 경우 KEYWORD(임시로 no 로 설정)를 받아서 그 KEYWORD가 들어오면
