@@ -46,7 +46,7 @@ public class ChallengeDao {
     ChallengeVo challenge = null; // 챌린지 정보 담을 객체 초기화
         try{
             conn = Common.getConnection();
-            String sql = "SELECT CHL_NAME, CHL_LEVEL, CHL_DESC, TO_CHAR(CHL_DATE, 'YVYY-MM-DD'), CHL_POINT FROM CHALLENGE WHERE CHL_NAME = ?";
+            String sql = "SELECT CHL_NAME, CHL_LEVEL, CHL_DESC, TO_CHAR(CHL_DATE, 'YVYY-MM-DD') AS CHL_DATE, CHL_POINT FROM CHALLENGE WHERE CHL_NAME = ?";
             pstmt = conn.prepareStatement(sql); // 보낼 쿼리문을 준비하고 있다
             pstmt.setString(1, chlName);        // ?에 챌린지 명으로 검색하기 위해서
             rs = pstmt.executeQuery();
@@ -55,7 +55,7 @@ public class ChallengeDao {
                 chlName = rs.getString("CHL_NAME");   // 챌린지 이름
                 String chlLevel = rs.getString("CHL_LEVEL"); // 챌린지 난이도
                 String chlDesc = rs.getString("CHL_DESC");   // 챌린지 설명
-                String chlDate = rs.getString(4);            // 챌린지 시작 날짜
+                String chlDate = rs.getString("CHL_DATE");            // 챌린지 시작 날짜
                 int chlPoint = rs.getInt("Chl_POINT");              // 획득 가능 포인트
                 challenge = new ChallengeVo(chlName, chlLevel, chlDesc, chlDate, chlPoint); // 챌린지 정보
         }
