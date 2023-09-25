@@ -343,14 +343,18 @@ public class MyPageDao {
             int sel = sc.nextInt();
             switch(sel) {
                 case 1: // [1] 회원정보 수정 선택 시
+                    String userPw;
                     while(true) {// 로그인한 회원의 비밀번호와 일치하게 입력할 때 까지 반복
-                        System.out.print("회원정보를 수정하려면 비밀번호를 입력하세요 : ");
-                        String userPw = sc.next();
+                        System.out.print("회원정보를 수정하려면 비밀번호를 입력하세요 (돌아가려면 back입력) : ");
+                        userPw = sc.next();
+                        // 돌아가기 원하는지 여부 먼저 확인
+                        if(userPw.equalsIgnoreCase("back")) break;
                         // 비밀번호 일치여부 확인
                         if(!mDao.checkMember(userId,userPw)){
                             System.out.println("비밀번호를 잘 못 입력하셨습니다.");
-                        }else break; //일치하면 while문 탈출
+                        } else break; //일치하면 while문 탈출
                     }
+                    if(userPw.equalsIgnoreCase("back")) break;
                     // 회원정보 수정 메소드 실행
                     membersUpdate(currMv, userId);
                     break;
