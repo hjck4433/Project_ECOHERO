@@ -1,6 +1,7 @@
 package Project_Ecohero.Dao;
 
 import Project_Ecohero.Common.Common;
+import Project_Ecohero.Common.Util;
 import Project_Ecohero.Vo.FeedVo;
 import Project_Ecohero.Vo.MembersVo;
 
@@ -8,7 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+
 
 public class MembersDao {
 
@@ -83,10 +86,15 @@ public class MembersDao {
             System.out.print("아이디 : ");
             userId = sc.next();
             String check = userId;
+
+            Util ut = new Util();
             // 중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserId())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 아이디 입니다.");
-            }else break;
+            }else if (!ut.checkInputOnlyNumberAndAlphabet(userId)) System.out.println("영문과 숫자 조합만 사용해주세요.");
+            else if (userId.length() < 5) System.out.println("ID는 5자 이상 입력해주세요");
+            else if (userId.length() > 20) System.out.println("ID는 20자 이하로 입력해주세요");
+            else break;
         }
 
         // 비밀번호 입력
@@ -100,16 +108,23 @@ public class MembersDao {
             else break;
         }
 
-        // 닉네임 입력
+        // 닉네임 입력 - byte → int 변환해서 글자길이 x, 인트나 바이트 길이로 기준.
+        // int it = b_data & 0xff;
         String userAlias;
         while(true) {
             System.out.print("닉네임 : ");
             userAlias = sc.next();
             String check = userAlias;
+
+            int intA = userAlias.getBytes().length;
+
             // 중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 닉네임 입니다.");
-            }else break;
+            }
+            else if (intA < 2) System.out.print("닉네임은 2자 이상 입력해주세요");
+            else if (intA > 30) System.out.print("길이제한을 초과하였습니다 (한글은 10자, 영어는 30자)");
+            else break;
         }
 
         // 이름 입력
@@ -122,22 +137,29 @@ public class MembersDao {
             System.out.print("이메일 : ");
             userEmail = sc.next();
             String check = userEmail;
+
+            String pattern2 = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+
             //중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserEmail())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 이메일 입니다.");
-            }else break;
+            }
+            else if (!Pattern.matches(pattern2, check)) System.out.println("올바른 이메일 형식이 아닙니다.");
+            else break;
         }
 
-        // 핸드폰 번호 입력
+        // 핸드폰 번호 입력  - 13자리만 허용 (비워둘 수 없습니다 → 자동적용)
         String userPhone;
         while(true) {
-            System.out.print("핸드폰번호 : ");
+            System.out.println("핸드폰번호 : ");
             userPhone = sc.next();
             String check = userPhone;
             //중복 체크
             if(mvl.stream().filter(n -> check.equals(n.getUserPhone())).findAny().orElse(null) != null) {
                 System.out.println("이미 사용중인 번호 입니다.");
-            }else break;
+            }
+            else if (userPhone.length() != 13) System.out.print("전화번호는 (-)포함 13글자로 작성하세요.");
+            else break;
         }
 
         // 모든 입력이 완료되면 MEMBERS 테이블에 추가
