@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 public class MyPageDao {
@@ -95,19 +96,19 @@ public class MyPageDao {
 
 
         // 수정할 닉네임 입력
-//        String userAlias;
-//        while(true) {
-//            System.out.print("변경할 닉네임을 입력하세요 : ");
-//            userAlias = sc.next();
-//            String check = userAlias;
-//            // 중복 체크
-//            if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
-//                System.out.println("이미 사용중인 닉네임 입니다.");
-//            }else if (userAlias.equalsIgnoreCase("no")){ // 아무것도 입력안하면 기존 값 유지
-//                userAlias = cml.getUserAlias();
-//                break;
-//            }else break;
-//        }
+        String userAlias;
+        while(true) {
+            System.out.print("변경할 닉네임을 입력하세요 : ");
+            userAlias = sc.next();
+            String check = userAlias;
+            // 중복 체크
+            if(mvl.stream().filter(n -> check.equals(n.getUserAlias())).findAny().orElse(null) != null) {
+                System.out.println("이미 사용중인 닉네임 입니다.");
+            }else if (userAlias.equalsIgnoreCase("no")){ // 아무것도 입력안하면 기존 값 유지
+                userAlias = cml.getUserAlias();
+                break;
+            }else break;
+        }
 
         // 수정할 이메일 입력
         String userEmail="";
@@ -115,6 +116,8 @@ public class MyPageDao {
             System.out.print("변경할 이메일을 입력하세요: ");
             userEmail = sc.next();
             String check = userEmail;
+            String pattern2 = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+
             //중복 체크
             // 회원정보 리스트에 스트림으로 필터를 걸어서 하나라도 일치하는게 있다면 값 반환 없으면 null 반환
             // for문 활용 대신 stream() 사용
@@ -125,7 +128,9 @@ public class MyPageDao {
                 // 기존 내용 유지
                 userEmail = cml.getUserEmail();
                 break;
-            }else break;
+            }
+            else if(!Pattern.matches(pattern2, check)) System.out.println("올바른 이메일 형식이 아닙니다.");
+            else break;
         }
 
         // 수정할 핸드폰 번호 입력
@@ -149,29 +154,29 @@ public class MyPageDao {
 
 
         String sql = "";
-        if(userPw.equalsIgnoreCase("no")) {
-            sql = "UPDATE MEMBERS SET USER_EMAIL=?, USER_PHONE=? WHERE USER_ID = ?";
+        if(userPw.equalsIgnoreCase("no")) { // 비밀번호 수정을 안하는 경우 → value값 없음
+            sql = "UPDATE MEMBERS SET USER_ALIAS=?, USER_EMAIL=?, USER_PHONE=? WHERE USER_ID = ?";
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
-                //pstmt.setString(2,userAlias);
-                pstmt.setString(1,userEmail);
-                pstmt.setString(2,userPhone);
-                pstmt.setString(3, userId);
+                pstmt.setString(1, userAlias);
+                pstmt.setString(2, userEmail);
+                pstmt.setString(3, userPhone);
+                pstmt.setString(4, userId);
                 pstmt.executeUpdate();
             }catch(Exception e)  {
                 e.printStackTrace();
             }
-        }else {
-            sql = "UPDATE MEMBERS SET USER_PW =?, USER_EMAIL=?, USER_PHONE=? WHERE USER_ID = ?";
+        }else { // 비밀번호 수정을 하는 경우
+            sql = "UPDATE MEMBERS SET USER_PW =?, USER_ALIAS=?, USER_EMAIL=?, USER_PHONE=? WHERE USER_ID = ?";
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, userPw);
-                //pstmt.setString(3,userAlias);
-                pstmt.setString(2,userEmail);
-                pstmt.setString(3,userPhone);
-                pstmt.setString(4, userId);
+                pstmt.setString(2, userAlias);
+                pstmt.setString(3, userEmail);
+                pstmt.setString(4, userPhone);
+                pstmt.setString(5, userId);  // 조건절이라 마지막에 붙음
                 pstmt.executeUpdate();
             }catch(Exception e) {
                 e.printStackTrace();
