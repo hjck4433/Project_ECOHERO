@@ -2,6 +2,7 @@ package Project_Ecohero.Dao;
 
 import Project_Ecohero.Common.Common;
 import Project_Ecohero.Vo.FeedVo;
+import Project_Ecohero.Vo.MembersVo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,11 +52,12 @@ public class FeedDao {
             // db 연결
             conn = Common.getConnection();
             //  sql 변수에 sql문 값 할당
-            String sql = "SELECT USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT, (SELECT COUNT(*) FROM GOOD G WHERE F.FEED_NUM = G.FEED_NUM) GOOD_NUM FROM FEED F WHERE F.FEED_NUM = ?";
+            String sql = "SELECT (SELECT USER_ALIAS FROM MEMBERS WHERE USER_ID = (SELECT USER_ID FROM FEED WHERE FEED_NUM = ?)) USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT, (SELECT COUNT(*) FROM GOOD G WHERE F.FEED_NUM = G.FEED_NUM) GOOD_NUM FROM FEED F WHERE F.FEED_NUM = ?";
             // db에 보낼 준비
             pstmt = conn.prepareStatement(sql);
             // 첫번째 ? 에 feedNumSelect메소드로 받은 고유번호 리스트의 num번째 인덱스에서 고유번호값을 가져와서 넣어줌
             pstmt.setInt(1, fnl.get(feedNumIdx));
+            pstmt.setInt(2, fnl.get(feedNumIdx));
             // 쿼리를 db로 날리고 결과를 반환 받음
             rs = pstmt.executeQuery();
             if(rs.next()) {
@@ -149,26 +151,83 @@ public class FeedDao {
             e.printStackTrace();
         }
     }
+    // 새 피드를 추가할 때 참고 할 수 있는 챌린지명 출력이 필요 함
+    // 챌리지명을 리스트로 담아오는 메소드
+    public List<String> chlNameList(){
+        List<String> chlList = new ArrayList<>();
+        try{
+            conn = Common.getConnection();
+            String sql = "SELECT CHL_NAME FROM CHALLENGE";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while(rs.next()) {
+                String chlName = rs.getString("CHL_NAME");
+
+                chlList.add(chlName);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(pstmt);
+        Common.close(conn);
+        return chlList;
+    }
+    // 챌린지 이름만 프린트
+    public void printChlNameList(List<String> chlNameList){
+        System.out.print("입력 가능한 챌린지 명 : ");
+        for(String chl : chlNameList) System.out.print(chl + " / ");
+        System.out.println();
+    }
+
 
     // 새 피드 추가 하기 - 사진, 글 내용, 챌린지명
-    public void insertFeed(String userId, String userAlias) {
+    public void insertFeed(String userId) {
         sc.nextLine();
-        System.out.print("사진 입력 : ");
-        String ecoImg = sc.nextLine();
-        System.out.print("내용 입력 : ");
-        String ecoTxt = sc.nextLine();
-        System.out.print("챌린지명 입력 : ");
-        String chlName = sc.next();
+        String ecoImg;
+        while(true) {
+            System.out.print("사진 입력 : ");
+            ecoImg = sc.nextLine();
+            if(ecoImg.getBytes().length > 300){
+                System.out.println("입력 가능 허용 범위를 초과하였습니다. 영문 기준 300, 한글 기준 100자까지 입력 가능합니다.");
+            }else break;
+        }
 
-        System.out.print("[1] 업로드 [2] 취소 : ");
-        int sel = sc.nextInt();
+        String ecoTxt;
+        while(true) {
+            System.out.print("내용 입력 : ");
+            ecoTxt = sc.nextLine();
+            if(ecoImg.getBytes().length > 300){
+                System.out.println("입력 가능 허용 범위를 초과하였습니다. 영문 기준 300, 한글 기준 100자까지 입력 가능합니다.");
+            }else break;
+        }
 
-        String sql = "INSERT INTO FEED (FEED_NUM, USER_ALIAS, ECO_IMG, CHL_NAME, ECO_TXT) VALUES(FEED_NUM_SEQ.NEXTVAL,?,?,?,?)";
+        List<String> cnl = chlNameList();
+        printChlNameList(cnl);
+        String chlName;
+        while(true) {
+            System.out.print("챌린지명 입력 : ");
+            chlName = sc.next();
+            if(!cnl.contains(chlName)){
+                System.out.println("없는 챌린지 입니다.");
+                printChlNameList(cnl);
+            }else break;
+        }
+
+        int sel;
+        while(true) {
+            System.out.print("[1] 업로드 [2] 취소 : ");
+            sel = sc.nextInt();
+            if (sel == 1 || sel == 2 ) break;
+            else System.out.println("메뉴를 잘 못 선택하셨습니다.");
+        }
+
+        String sql = "INSERT INTO FEED (FEED_NUM, USER_ID, ECO_IMG, CHL_NAME, ECO_TXT) VALUES(FEED_NUM_SEQ.NEXTVAL,?,?,?,?)";
         if (sel == 1) {
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, userAlias);
+                pstmt.setString(1, userId);
                 pstmt.setString(2, ecoImg);
                 pstmt.setString(3, chlName);
                 pstmt.setString(4, ecoTxt);
@@ -187,24 +246,75 @@ public class FeedDao {
             System.out.println("피드 작성을 취소하셨습니다.");
         }
     }
+    // 호출될 때 기준으로 현재 유저 포인트 조회
+    public int currUserPoint(String userId) {
+        int currPoint = 0;
+        try{
+            conn = Common.getConnection();
+            String sql = "SELECT USER_POINT FROM MEMBERS WHERE USER_ID = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                currPoint = rs.getInt("USER_POINT");
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(pstmt);
+        Common.close(conn);
+
+        return currPoint;
+    }
+
+    // 작성한 피드의 포인트 구하기
+    public int getUpdatePoint(String chlName) {
+        int updatePoint = 0;
+        try{
+            conn = Common.getConnection();
+            String sql = "SELECT POINT FROM ECO_LV WHERE LEVELS IN (SELECT CHL_LEVEL  FROM CHALLENGE WHERE CHL_NAME = ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,chlName);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()) {
+                updatePoint = rs.getInt("POINT");
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(pstmt);
+        Common.close(conn);
+
+        return updatePoint;
+    }
 
     // 새 피드를 추가하면 글의 난이도에 해당 하는 포인트가 USER_POINT에 UPDATE
     public void updateUserPoint(String userId, String chlName) {
+        int updatePoint = getUpdatePoint(chlName);
         try{
             conn = Common.getConnection();
-            String sql = "UPDATE MEMBERS SET USER_POINT = USER_POINT + (SELECT POINT FROM ECO_LV WHERE LEVELS IN (SELECT CHL_LEVEL  FROM CHALLENGE WHERE CHL_NAME = ?)) WHERE USER_ID = ?";
+            String sql = "UPDATE MEMBERS SET USER_POINT = USER_POINT + ? WHERE USER_ID = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, chlName);
+            pstmt.setInt(1, updatePoint);
             pstmt.setString(2, userId);
 
             pstmt.executeUpdate();
 
             Common.close(pstmt);
             Common.close(conn);
-            System.out.println("포인트가 적립되었습니다.");
         }catch(Exception e) {
             e.printStackTrace();
         }
+        int currUserPoint = currUserPoint(userId);
+        int prevUserPoint = currUserPoint - updatePoint;
+
+        System.out.print(prevUserPoint+"에 "+updatePoint+"점이 적립되어 "+currUserPoint+"가 되었습니다!!");
     }
 
 
@@ -225,7 +335,7 @@ public class FeedDao {
                     feedNumIdx ++;
                     break;
                 case 3:
-                    insertFeed(userId,userAlias);
+                    insertFeed(userId);
                     feedNumIdx = 0;
                     fnl = feedNumSelect();
                     break;
