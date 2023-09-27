@@ -38,7 +38,7 @@ public class JdbcMain {
                         continue;
                     }
                 case 2:
-                    mDao.insertNewMember();
+                    userId = mDao.insertNewMember();
                     isLogin = true;
                     break;
                 case 3:

@@ -73,7 +73,7 @@ public class MembersDao {
 
     // 회원가입을 하는 경우 MEMBERS 테이블에 추가
     // 회원가입을 하기 위해서는 아이디, 비밀번호, 닉네임, 이름, 이메일, 핸드폰번호를 입력
-    public void insertNewMember() {
+    public String insertNewMember() {
         // 모든 회원정보중 필요한 정보들만 불러와 리스트에 담아 줌
         List<MembersVo> mvl = selectMembersInfo();
 
@@ -157,7 +157,7 @@ public class MembersDao {
         // 핸드폰 번호 입력  - 13자리만 허용 (비워둘 수 없습니다 → 자동적용)
         String userPhone;
         while(true) {
-            System.out.println("핸드폰번호 : ");
+            System.out.print("핸드폰번호 : ");
             userPhone = sc.next();
             String check = userPhone;
             //중복 체크
@@ -188,6 +188,8 @@ public class MembersDao {
         Common.close(pstmt);
         Common.close(conn);
         System.out.println("회원가입이 완료되었습니다. 메인메뉴로 이동합니다.");
+
+        return userId;
     }
 
 }
